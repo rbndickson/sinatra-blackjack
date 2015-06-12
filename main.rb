@@ -110,7 +110,6 @@ post '/set_name' do
 end
 
 get '/start_game' do
-
   session[:deck] = make_deck.shuffle!
   card_display = {}
   @player_stayed = false
@@ -127,8 +126,8 @@ get '/start_game' do
   else
     @info = "Your turn - will you hit or stay?"
   end
-  erb :game
 
+  erb :game
 end
 
 post '/hit' do
@@ -169,6 +168,7 @@ get '/dealers_turn' do
       redirect '/compare'
     end
   end
+
   erb :game
 end
 
@@ -188,10 +188,12 @@ get '/compare' do
   else
     loser!("Dealer wins (>_<)")
   end
+
   erb :game
 end
 
 get '/finished' do
   @info = "Thank you for playing Blackjack!"
+
   erb :finished
 end
