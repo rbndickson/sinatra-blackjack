@@ -71,6 +71,12 @@ helpers do
     @game_finished = true
   end
 
+  def blackjack?(cards)
+    calculate_total(cards) == BLACKJACK_AMOUNT &&
+    cards.count == 2
+  end
+
+
 end
 
 before do # this is executed before every get or post
@@ -104,8 +110,7 @@ post '/hit' do
   session[:player_cards] << session[:deck].pop
   if calculate_total(session[:player_cards]) > BLACKJACK_AMOUNT
     loser!("Busted!")
-  elsif calculate_total(session[:player_cards]) == BLACKJACK_AMOUNT &&
-    session[:player_cards].count == 2
+  elsif blackjack?(session[:player_cards])
     winner!("Nice! You have Blackjack!")
   else
     @info = "Your turn - will you hit or stay?"
@@ -122,9 +127,9 @@ end
 get '/dealers_turn' do
   @player_stayed = true
   @show_player_buttons = false
-  if calculate_total(session[:player_cards]) == BLACKJACK_AMOUNT &&
-     session[:player_cards].count == 2
-    if calculate_total(session[:dealer_cards]) == BLACKJACK_AMOUNT
+
+  if blackjack?(session[:player_cards])
+    if blackjack?(session[:dealer_cards])
       push!("Push!")
     else
       winner!("You win with Blackjack (^v^)v")
@@ -175,10 +180,16 @@ get '/start_game' do
   session[:player_cards] << session[:deck].pop
 
   if calculate_total(session[:player_cards]) == BLACKJACK_AMOUNT
+    @player_stayed = true
     winner!("You win with Blackjack (^v^)v")
   else
     @info = "Your turn - will you hit or stay?"
   end
   erb :game
 
+end
+
+get '/finished' do
+  @info = "Thank you for playing Blackjack!"
+  erb :finished
 end

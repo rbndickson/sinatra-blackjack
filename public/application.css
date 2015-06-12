@@ -24,6 +24,7 @@ div.controls {
 }
 
 div.game_member_container {
+  height: 250px;
   margin-bottom: 10px;
   margin-top: 10px;
   background-color: #f5f5f5;
