@@ -1,19 +1,10 @@
-form#hit_form {
-  float: left;
-  margin-right: 10px;
-}
-
-form#stay_form {
-  float: left;
-}
-
 form.control_button {
   float: left;
-  margin-right: 10px;
+  padding-right: 10px;
 }
 
 img.card_image {
-  margin-right: 5px;
+  padding-left: 5px;
 }
 
 div.controls {
@@ -47,7 +38,6 @@ div.member_info {
 }
 
 div.member_cards {
-  margin-left: 15%;
   padding-top: 15px;
   padding-bottom: 15px;
   background-color: #f5f5f5;

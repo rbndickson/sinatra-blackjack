@@ -76,6 +76,9 @@ helpers do
     cards.count == 2
   end
 
+  def busted?(cards)
+    calculate_total(cards) > BLACKJACK_AMOUNT
+  end
 
 end
 
@@ -106,9 +109,31 @@ post '/set_name' do
   redirect '/start_game'
 end
 
+get '/start_game' do
+
+  session[:deck] = make_deck.shuffle!
+  card_display = {}
+  @player_stayed = false
+
+  session[:dealer_cards] = []
+  session[:player_cards] = []
+  session[:dealer_cards] << session[:deck].pop
+  session[:player_cards] << session[:deck].pop
+  session[:dealer_cards] << session[:deck].pop
+  session[:player_cards] << session[:deck].pop
+
+  if blackjack?(session[:player_cards])
+    redirect '/dealers_turn'
+  else
+    @info = "Your turn - will you hit or stay?"
+  end
+  erb :game
+
+end
+
 post '/hit' do
   session[:player_cards] << session[:deck].pop
-  if calculate_total(session[:player_cards]) > BLACKJACK_AMOUNT
+  if busted?(session[:player_cards])
     loser!("Busted!")
   elsif blackjack?(session[:player_cards])
     winner!("Nice! You have Blackjack!")
@@ -132,13 +157,13 @@ get '/dealers_turn' do
     if blackjack?(session[:dealer_cards])
       push!("Push!")
     else
-      winner!("You win with Blackjack (^v^)v")
+      winner!("You have Blackjack - you win! (^v^)v")
     end
   else
     @info = "Dealers turn - hit next card to see what they have!"
     if calculate_total(session[:dealer_cards]) < 17
       @show_dealer_button = true
-    elsif calculate_total(session[:dealer_cards]) > BLACKJACK_AMOUNT
+    elsif busted?(session[:dealer_cards])
       winner!("Dealer has busted - you win!")
     else
       redirect '/compare'
@@ -164,29 +189,6 @@ get '/compare' do
     loser!("Dealer wins (>_<)")
   end
   erb :game
-end
-
-get '/start_game' do
-
-  session[:deck] = make_deck.shuffle!
-  card_display = {}
-  @player_stayed = false
-
-  session[:dealer_cards] = []
-  session[:player_cards] = []
-  session[:dealer_cards] << session[:deck].pop
-  session[:player_cards] << session[:deck].pop
-  session[:dealer_cards] << session[:deck].pop
-  session[:player_cards] << session[:deck].pop
-
-  if calculate_total(session[:player_cards]) == BLACKJACK_AMOUNT
-    @player_stayed = true
-    winner!("You win with Blackjack (^v^)v")
-  else
-    @info = "Your turn - will you hit or stay?"
-  end
-  erb :game
-
 end
 
 get '/finished' do
