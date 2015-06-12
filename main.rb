@@ -96,7 +96,7 @@ get '/' do
 end
 
 get '/name_entry' do
-  @info = "Please enter your name"
+  @info = "Welcome to Blackjack! Please enter your name"
   erb :name_entry
 end
 
