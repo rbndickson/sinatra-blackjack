@@ -3,7 +3,7 @@ require 'sinatra'
 
 use Rack::Session::Cookie, :key => 'rack.session',
                            :path => '/',
-                           :secret => 'sOgMCZmyqVMwO4g4QJC8' 
+                           :secret => 'sOgMCZmyqVMwO4g4QJC8'
 
 BLACKJACK_AMOUNT = 21
 
@@ -181,11 +181,12 @@ end
 get '/compare' do
   @player_stayed = true
 
-  if calculate_total(session[:player_cards]) ==
-     calculate_total(session[:dealer_cards])
+  player_score = calculate_total(session[:player_cards])
+  dealer_score = calculate_total(session[:dealer_cards])
+
+  if player_score == dealer_score
     push!("It's a push")
-  elsif calculate_total(session[:player_cards]) >
-     calculate_total(session[:dealer_cards])
+  elsif player_score > dealer_score
     winner!("You win!")
   else
     loser!("Dealer wins (>_<)")
