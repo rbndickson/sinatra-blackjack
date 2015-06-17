@@ -14,8 +14,17 @@
     </form>
   <% end %>
 
-  <% if @game_finished %>
-    <form class="control_button" method="get" action="/start_game">
+  <% if @hand_finished && session[:players_money] <= 0 %>
+    <form class="control_button" method="get" action="/start_over">
+      <input class="btn btn-success" type="submit" value="Start again">
+    </form>
+    <form class="control_button" method="get" action="/finished">
+      <input class="btn btn-warning" type="submit" value="No thanks">
+    </form>
+  <% end %>
+
+  <% if @hand_finished && session[:players_money] > 0 %>
+    <form class="control_button" method="get" action="/bet">
       <input class="btn btn-success" type="submit" value="Play again">
     </form>
     <form class="control_button" method="get" action="/finished">
@@ -45,7 +54,11 @@
 <div class="game_member_container">
   <div class="member_info">
     <h3><%= session[:player_name] %>:</h3>
-    <h3><%= calculate_total(session[:player_cards]) %></h3>
+    <h4><%= calculate_total(session[:player_cards]) %></h4></br>
+
+    <p>Bet: <%= session[:players_bet] %></p>
+    <p>Money: <%= session[:players_money] %></p>
+
   </div>
   <div class="member_cards">
     <% session[:player_cards].each do |card| %>

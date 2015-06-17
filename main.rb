@@ -6,6 +6,8 @@ use Rack::Session::Cookie, :key => 'rack.session',
                            :secret => 'sOgMCZmyqVMwO4g4QJC8'
 
 BLACKJACK_AMOUNT = 21
+DEALER_MIN_STAY_AMOUNT = 17
+INITIAL_POT_AMOUNT = 500
 
 helpers do
 
@@ -57,20 +59,28 @@ helpers do
 
   def winner!(message)
     @show_player_buttons = false
-    @success = message
-    @game_finished = true
+    @hand_finished = true
+    session[:players_money] += session[:players_bet].to_i * 2
+    @success = message + " - You win $#{session[:players_bet]}!"
+    session[:players_bet] = 0
   end
 
   def loser!(message)
     @show_player_buttons = false
-    @error = message
-    @game_finished = true
+    @hand_finished = true
+    if session[:players_money] > 0
+      @error = message + " - You lost $#{session[:players_bet]}."
+    else
+      @error = 'You have run out of money (>_<) Would you like to play again?'
+    end
+    session[:players_bet] = 0
   end
 
   def push!(message)
     @show_player_buttons = false
     @alert = message
-    @game_finished = true
+    @hand_finished = true
+    session[:players_money] += session[:players_bet].to_i
   end
 
   def blackjack?(cards)
@@ -91,7 +101,7 @@ end
 
 get '/' do
   if session.has_key?(:player_name)
-    redirect '/start_game'
+    redirect '/game'
   else
     redirect '/name_entry'
   end
@@ -108,10 +118,25 @@ post '/set_name' do
     halt erb(:name_entry)
   end
   session[:player_name] = params[:player_name]
-  redirect '/start_game'
+  redirect '/start_over'
 end
 
-get '/start_game' do
+get '/bet' do
+  @info = "You have $#{session[:players_money]}. How much will you bet this round?"
+  erb :bet
+end
+
+post '/bet' do # Not sure why non ints are rejected here but its good
+  if params[:bet].to_i > session[:players_money] || params[:bet].to_i < 1
+    @error = "Please enter your bet, you have $" + session[:players_money].to_s
+    halt erb(:bet)
+  end
+  session[:players_bet] = params[:bet]
+  session[:players_money] -= session[:players_bet].to_i
+  redirect '/game'
+end
+
+get '/game' do
   session[:deck] = make_deck.shuffle!
   card_display = {}
   @player_stayed = false
@@ -162,7 +187,7 @@ get '/dealers_turn' do
     end
   else
     @info = "Dealers turn - hit next card to see what they have!"
-    if calculate_total(session[:dealer_cards]) < 17
+    if calculate_total(session[:dealer_cards]) < DEALER_MIN_STAY_AMOUNT
       @show_dealer_button = true
     elsif busted?(session[:dealer_cards])
       winner!("Dealer has busted - you win!")
@@ -193,6 +218,11 @@ get '/compare' do
   end
 
   erb :game
+end
+
+get '/start_over' do
+  session[:players_money] = INITIAL_POT_AMOUNT
+  redirect '/bet'
 end
 
 get '/finished' do
