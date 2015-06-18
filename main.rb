@@ -62,7 +62,6 @@ helpers do
     @hand_finished = true
     session[:players_money] += session[:players_bet].to_i * 2
     @winner = message + " - You win $#{session[:players_bet]}!"
-    session[:players_bet] = 0
   end
 
   def loser!(message)
@@ -73,7 +72,6 @@ helpers do
     else
       @loser = 'You have run out of money (>_<) Would you like to play again?'
     end
-    session[:players_bet] = 0
   end
 
   def push!(message)
