@@ -1,3 +1,7 @@
+html {
+  overflow-y: scroll;
+}
+
 form.control_button {
   float: left;
   padding-right: 10px;
