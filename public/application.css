@@ -2,25 +2,30 @@ html {
   overflow-y: scroll;
 }
 
+form {
+  margin-bottom: 0px;
+}
+
+.alert {
+  margin-bottom: 10px;
+}
+
+div.controls {
+  height: 30px;
+  padding-left: 20px;
+  padding-top: 0px;
+  padding-bottom: 0px;
+}
+
 form.control_button {
   float: left;
   padding-right: 10px;
 }
 
-img.card_image {
-  padding-left: 5px;
-}
-
-div.controls {
-  height: 30px;
-  padding-left: 50px;
-  padding-top: 10px;
-  padding-bottom: 10px;
-}
-
 div.game_member_container {
-  height: 250px;
-  margin-bottom: 10px;
+  /*height needs to be fixed as cards are not all the same height*/
+  /*207 - 215 after resizing*/
+  height: 235px;
   margin-top: 10px;
   background-color: #f5f5f5;
   border: 1px solid #e3e3e3;
@@ -36,17 +41,16 @@ div.member_info {
   width: 15%;
   padding-left: 20px;
   padding-top: 15px;
-  padding-bottom: 15px;
+  padding-bottom: 0px;
   float: left;
   background-color: #f5f5f5;
 }
 
 div.member_cards {
-  padding-top: 15px;
-  padding-bottom: 15px;
+  padding-top: 10px;
   background-color: #f5f5f5;
 }
 
-.alert {
-  margin-bottom: 10px;
+img.card_image {
+  padding-left: 5px;
 }
