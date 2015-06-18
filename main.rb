@@ -61,7 +61,7 @@ helpers do
     @show_player_buttons = false
     @hand_finished = true
     session[:players_money] += session[:players_bet].to_i * 2
-    @success = message + " - You win $#{session[:players_bet]}!"
+    @winner = message + " - You win $#{session[:players_bet]}!"
     session[:players_bet] = 0
   end
 
@@ -69,16 +69,16 @@ helpers do
     @show_player_buttons = false
     @hand_finished = true
     if session[:players_money] > 0
-      @error = message + " - You lost $#{session[:players_bet]}."
+      @loser = message + " - You lost $#{session[:players_bet]}."
     else
-      @error = 'You have run out of money (>_<) Would you like to play again?'
+      @loser = 'You have run out of money (>_<) Would you like to play again?'
     end
     session[:players_bet] = 0
   end
 
   def push!(message)
     @show_player_buttons = false
-    @alert = message
+    @push = message
     @hand_finished = true
     session[:players_money] += session[:players_bet].to_i
   end
@@ -151,7 +151,7 @@ get '/game' do
   if blackjack?(session[:player_cards])
     redirect '/dealers_turn'
   else
-    @info = "Your turn - will you hit or stay?"
+    @in_game_info = "Your turn - will you hit or stay?"
   end
 
   erb :game
@@ -164,10 +164,10 @@ post '/hit' do
   elsif blackjack?(session[:player_cards])
     winner!("Nice! You have Blackjack!")
   else
-    @info = "Your turn - will you hit or stay?"
+    @in_game_info = "Your turn - will you hit or stay?"
   end
 
-  erb :game
+  erb :game, layout: false
 end
 
 post '/next_dealer_card' do
@@ -186,7 +186,7 @@ get '/dealers_turn' do
       winner!("You have Blackjack - you win! (^v^)v")
     end
   else
-    @info = "Dealers turn - hit next card to see what they have!"
+    @in_game_info = "Dealers turn - hit next card to see what they have!"
     if calculate_total(session[:dealer_cards]) < DEALER_MIN_STAY_AMOUNT
       @show_dealer_button = true
     elsif busted?(session[:dealer_cards])
@@ -196,7 +196,7 @@ get '/dealers_turn' do
     end
   end
 
-  erb :game
+  erb :game, layout: false
 end
 
 post '/stay' do
@@ -217,7 +217,7 @@ get '/compare' do
     loser!("Dealer wins (>_<)")
   end
 
-  erb :game
+  erb :game, layout: false
 end
 
 get '/start_over' do
