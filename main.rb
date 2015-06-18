@@ -91,7 +91,6 @@ helpers do
   def busted?(cards)
     calculate_total(cards) > BLACKJACK_AMOUNT
   end
-
 end
 
 before do # this is executed before every get or post
@@ -117,6 +116,7 @@ post '/set_name' do
     @error = "Name is required"
     halt erb(:name_entry)
   end
+
   session[:player_name] = params[:player_name]
   redirect '/start_over'
 end
@@ -131,6 +131,7 @@ post '/bet' do # Not sure why non ints are rejected here but its good
     @error = "Please enter your bet, you have $" + session[:players_money].to_s
     halt erb(:bet)
   end
+
   session[:players_bet] = params[:bet]
   session[:players_money] -= session[:players_bet].to_i
   redirect '/game'
@@ -185,6 +186,7 @@ get '/dealers_turn' do
     else
       winner!("You have Blackjack - you win! (^v^)v")
     end
+
   else
     @in_game_info = "Dealers turn - hit next card to see what they have!"
     if calculate_total(session[:dealer_cards]) < DEALER_MIN_STAY_AMOUNT
@@ -196,7 +198,7 @@ get '/dealers_turn' do
     end
   end
 
-  erb :game, layout: false
+  erb :game
 end
 
 post '/stay' do
@@ -227,6 +229,5 @@ end
 
 get '/finished' do
   @info = "Thank you for playing Blackjack!"
-
   erb :finished
 end
