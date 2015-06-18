@@ -99,11 +99,7 @@ before do # this is executed before every get or post
 end
 
 get '/' do
-  if session.has_key?(:player_name)
-    redirect '/game'
-  else
-    redirect '/name_entry'
-  end
+  redirect '/name_entry'
 end
 
 get '/name_entry' do
