@@ -205,7 +205,9 @@ get '/compare' do
   player_score = calculate_total(session[:player_cards])
   dealer_score = calculate_total(session[:dealer_cards])
 
-  if player_score == dealer_score
+  if blackjack?(session[:dealer_cards])
+    loser!("Oh no - dealer has blackjack!")
+  elsif player_score == dealer_score
     push!("It's a push")
   elsif player_score > dealer_score
     winner!("You win!")
