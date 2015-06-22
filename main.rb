@@ -186,7 +186,7 @@ get '/dealers_turn' do
     if calculate_total(session[:dealer_cards]) < DEALER_MIN_STAY_AMOUNT
       @show_dealer_button = true
     elsif busted?(session[:dealer_cards])
-      winner!("Dealer has busted - you win!")
+      winner!("Dealer has busted!")
     else
       redirect '/compare'
     end
@@ -210,7 +210,7 @@ get '/compare' do
   elsif player_score == dealer_score
     push!("It's a push")
   elsif player_score > dealer_score
-    winner!("You win!")
+    winner!("Great!")
   else
     loser!("Dealer wins (>_<)")
   end
@@ -224,6 +224,15 @@ get '/start_over' do
 end
 
 get '/finished' do
-  @info = "Thank you for playing Blackjack!"
+  profit_or_loss = session[:players_money] - 500
+  if profit_or_loss > 0
+    @info = "Thank you for playing Blackjack #{session[:player_name]}!  "\
+            "You made a total of $#{profit_or_loss}  (^v^)V"
+  elsif profit_or_loss < 0
+    @info = "Thank you for playing Blackjack #{session[:player_name]}!  "\
+            "You lost $#{profit_or_loss * -1}, watch out for the casinos!"
+  else
+    @info = "Thank you for playing Blackjack!  You broke even this time!"
+  end
   erb :finished
 end
