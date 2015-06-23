@@ -8,15 +8,15 @@
   <div id="slider"></div>
 
   <div id="slider_labels">
-    <label id="min_label">0</label>
-    <label id="max_label"><%= session[:players_money] %></label>
+    <label id="min_label">10</label>
+    <label id="max_label"><%= ((session[:players_money]/10)*10) %></label>
   </div>
 
   <script>
-  var players_money= '<%= session[:players_money] %>';
+  var players_money= '<%= ((session[:players_money]/10)*10).floor %>';
   $( '#slider' ).slider({
+    min: 10,
     max: players_money,
-    min: 0,
     step: 10,
     slide: function( event, ui ) {
       $("#bet-amount").val(ui.value);

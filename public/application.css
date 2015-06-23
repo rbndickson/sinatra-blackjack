@@ -68,6 +68,7 @@ img.card_image {
 
 #min_label {
   float: left;
+  margin-left: 7px;
 }
 
 #max_label {
