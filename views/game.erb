@@ -13,34 +13,34 @@
   <div class="controls">
     <% if @show_player_buttons %>
       <form class="control_button" id="hit_form" method="post" action="/hit">
-        <input class="btn btn-success" type="submit" value="hit">
+        <input class="btn btn-success" type="submit" value="Hit">
       </form>
       <form class="control_button" id="stay_form" method="post" action="/stay">
-        <input class="btn btn-warning" type="submit" value="stay">
+        <input class="btn btn-warning" type="submit" value="Stay">
       </form>
     <% end %>
 
     <% if @show_dealer_button %>
       <form method="post" id="next_card_form" action="/next_dealer_card">
-        <input class="btn btn-info" type="submit" value="next card">
+        <input class="btn btn-info" type="submit" value="Next card">
       </form>
     <% end %>
 
     <% if @hand_finished && session[:players_money] <= 0 %>
       <form class="control_button" method="get" action="/start_over">
-        <input class="btn btn-success" type="submit" value="Start again">
+        <input class="btn btn-success" type="submit" value="Start Again">
       </form>
       <form class="control_button" method="get" action="/finished">
-        <input class="btn btn-warning" type="submit" value="No thanks">
+        <input class="btn btn-warning" type="submit" value="No Thanks">
       </form>
     <% end %>
 
     <% if @hand_finished && session[:players_money] > 0 %>
       <form class="control_button" method="get" action="/bet">
-        <input class="btn btn-success" type="submit" value="Play again">
+        <input class="btn btn-success" type="submit" value="Play Again">
       </form>
       <form class="control_button" method="get" action="/finished">
-        <input class="btn btn-warning" type="submit" value="No thanks">
+        <input class="btn btn-warning" type="submit" value="No Thanks">
       </form>
     <% end %>
   </div>

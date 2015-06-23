@@ -101,13 +101,13 @@ get '/' do
 end
 
 get '/name_entry' do
-  @info = "Welcome to Blackjack! Please enter your name"
+  @info = "Welcome to Blackjack!<br>Please enter your name:"
   erb :name_entry
 end
 
 post '/set_name' do
   if params[:player_name].empty?
-    @error = "Name is required"
+    @error = "Please enter your name below."
     halt erb(:name_entry)
   end
 
