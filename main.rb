@@ -116,7 +116,8 @@ post '/set_name' do
 end
 
 get '/bet' do
-  @info = "You have $#{session[:players_money]}. How much will you bet this round?"
+  @info = "You have $#{session[:players_money]}. "\
+          "How much will you bet this round?"
   erb :bet
 end
 
