@@ -60,3 +60,16 @@ img.card_image {
  margin-top: 15px;
  width: 195px;
 }
+
+#slider_labels {
+  width: 220px;
+  margin-top: 5px;
+}
+
+#min_label {
+  float: left;
+}
+
+#max_label {
+  float: right;
+}
