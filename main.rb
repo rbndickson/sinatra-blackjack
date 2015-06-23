@@ -122,8 +122,9 @@ get '/bet' do
 end
 
 post '/bet' do # Not sure why non ints are rejected here but its good
+  params[:bet].delete! '$'
   if params[:bet].to_i > session[:players_money] || params[:bet].to_i < 1
-    @error = "Please enter your bet, you have <b>$" + session[:players_money].to_s + "</b>."
+    @error = "Please enter a bet between 1 and " + session[:players_money].to_s
     halt erb(:bet)
   end
 
