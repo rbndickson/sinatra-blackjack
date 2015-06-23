@@ -116,14 +116,14 @@ post '/set_name' do
 end
 
 get '/bet' do
-  @info = "You have $#{session[:players_money]}. "\
+  @info = "You have <b>$#{session[:players_money]}</b>. "\
           "How much will you bet this round?"
   erb :bet
 end
 
 post '/bet' do # Not sure why non ints are rejected here but its good
   if params[:bet].to_i > session[:players_money] || params[:bet].to_i < 1
-    @error = "Please enter your bet, you have $" + session[:players_money].to_s
+    @error = "Please enter your bet, you have <b>$" + session[:players_money].to_s + "</b>."
     halt erb(:bet)
   end
 
