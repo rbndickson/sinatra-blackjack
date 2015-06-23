@@ -54,3 +54,9 @@ div.member_cards {
 img.card_image {
   padding-left: 5px;
 }
+
+#slider {
+ margin-left: 10px;
+ margin-top: 15px;
+ width: 195px;
+}

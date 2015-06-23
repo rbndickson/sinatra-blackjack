@@ -1,7 +1,22 @@
 <div class="well">
   <form action="/bet" method="post">
-    <input type="text" name="bet"/>
+    <input id="bet-amount" type="text" name="bet"/>
     <br/>
     <input type="submit" class="btn"/>
   </form>
+
+  <div id="slider"></div>
+
+  <script>
+  var players_money= '<%= session[:players_money] %>';
+  $( '#slider' ).slider({
+    max: players_money,
+    min: 0,
+    step: 10,
+    slide: function( event, ui ) {
+      $("#bet-amount").val(ui.value);
+    }
+  });
+  </script>
+
 </div>
