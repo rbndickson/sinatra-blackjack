@@ -14,7 +14,7 @@ helpers do
   def make_deck
     suits = %w(S H D C)
     values = %w(A 2 3 4 5 6 7 8 9 10 J Q K)
-    deck = suits.product(values)
+    suits.product(values)
   end
 
   def calculate_total(hand)
@@ -135,7 +135,6 @@ end
 
 get '/game' do
   session[:deck] = make_deck.shuffle!
-  card_display = {}
   @player_stayed = false
 
   session[:dealer_cards] = []
